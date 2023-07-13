@@ -50,12 +50,6 @@ const StoryPage = observer(() => {
           <CardActions>
             <Link href={story?.value.url}>Learn More</Link>
           </CardActions>
-          {/*<Button sx={{ margin: '10px' }} onClick={handleNavigate} variant="outlined">*/}
-          {/*  BACK*/}
-          {/*</Button>*/}
-          {/*<Button sx={{ margin: '10px' }} variant="outlined">*/}
-          {/*  Refresh Comments*/}
-          {/*</Button>*/}
           <hr />
           <p>Number of comments: {story?.value?.descendants}</p>
           {Object.hasOwn(story?.value, 'kids') &&
