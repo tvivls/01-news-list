@@ -25,12 +25,15 @@ const Navbar = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, background: '90caf9' }}>
+    <Box sx={{ background: '#90caf9' }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}></IconButton>
-          {hasAddressId && <ArrowBackIosIcon onClick={handleNavigate} sx={{ m: 1, fontSize: 'medium' }} />}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {hasAddressId && (
+            <IconButton color="inherit" onClick={handleNavigate} size="small">
+              <ArrowBackIosIcon fontSize="small" />
+            </IconButton>
+          )}
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             News
           </Typography>
           <Button color="inherit" onClick={handleRefresh}>
