@@ -10,9 +10,9 @@ export type NewsType = {
 };
 
 export type CommentType = {
-  id?: number;
+  id: number;
   by?: string;
   text?: string;
   time?: number;
-  kids?: number[];
+  comments?: number[];
 };
