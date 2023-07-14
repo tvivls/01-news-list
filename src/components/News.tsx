@@ -7,28 +7,10 @@ const News = ({ id }: NewsType) => {
   const [news, setNews] = useState<NewsType[]>([]);
 
   useEffect(() => {
-    getStory(id).then((result) => setNews([...news, result]));
+    getStory(id).then((result) => result && result.url && setNews([...news, result]));
   }, []);
 
-  return (
-    <>
-      {news?.map(
-        (story) =>
-          story?.id && (
-            <NewsCard
-              key={story.id}
-              id={story.id}
-              url={story.url}
-              title={story.title}
-              by={story.by}
-              time={story.time}
-              score={story.score}
-              kids={story.kids}
-            />
-          ),
-      )}
-    </>
-  );
+  return <>{news?.map((story) => <NewsCard key={story.id} {...story} />)}</>;
 };
 
 export default News;
