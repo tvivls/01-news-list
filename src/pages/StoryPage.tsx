@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Alert, AlertTitle, Card, CardActions, CardContent, CircularProgress, Link, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, Divider, Link, Typography } from '@mui/material';
 import CommentList from '../components/CommentList';
 import newsStore from '../store/newsStore';
 import { observer } from 'mobx-react-lite';
+import StateError from '../components/StateError';
 
 const StoryPage = observer(() => {
   const { id } = useParams();
   const { getStoryAction, story } = newsStore;
+  let date = '';
 
   useEffect(() => {
     handleRefreshComments();
@@ -25,35 +27,32 @@ const StoryPage = observer(() => {
     getStoryAction(Number(id));
   };
 
-  if (story?.state === 'pending') return <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%' }} />;
-  if (story?.state === 'rejected')
-    return (
-      <Alert severity="error">
-        <AlertTitle>Error</AlertTitle>
-        This is an error alert — <strong>check it out!</strong>
-      </Alert>
-    );
+  if (story?.state === 'pending' || story?.state === 'rejected') {
+    return <StateError state={story?.state} />;
+  }
+
+  if (story?.value.time) date = new Date(1000 * story?.value.time).toUTCString();
 
   return story?.value ? (
     <>
       {story && (
-        <Card sx={{ margin: '10px', padding: '10px' }}>
+        <Card sx={{ margin: '10px', padding: '10px', borderRadius: '10px' }}>
           <CardContent>
-            <Typography variant="h2" component="div">
-              {story?.value?.title}
-            </Typography>
+            <Typography variant="h2">{story?.value?.title}</Typography>
             <Typography variant="h5">By: {story?.value.by}</Typography>
             <Typography sx={{ mt: 1 }} color="text.secondary">
-              {story?.value.time && new Date(1000 * story?.value.time).toUTCString()}
+              {date}
             </Typography>
           </CardContent>
           <CardActions>
-            <Link href={story?.value.url}>Learn More</Link>
+            <Link href={story?.value.url} target="_blank">
+              Learn More
+            </Link>
           </CardActions>
-          <hr />
-          <p>Number of comments: {story?.value?.descendants}</p>
+          <Divider variant="middle" sx={{ m: 1 }} />
+          <Typography>Number of comments: {story?.value?.descendants}</Typography>
           {Object.hasOwn(story?.value, 'kids') &&
-            story?.value.kids?.map((childId) => <CommentList key={childId} commentId={childId} />)}
+            story?.value.kids?.map((commentId) => <CommentList key={commentId} commentId={commentId} />)}
         </Card>
       )}
     </>
