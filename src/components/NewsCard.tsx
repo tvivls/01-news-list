@@ -9,13 +9,12 @@ import { StyledLink } from '../styles/newsStyles';
 
 const NewsCard = ({ title, score, by, time, id }: NewsType) => {
   const navigate = useNavigate();
-  let date = '';
 
   const handleNavigate = () => {
     navigate(`${STORY_ROUTE}/${id}`);
   };
 
-  if (time) date = new Date(1000 * time).toUTCString();
+  const date = time ? new Date(1000 * time).toUTCString() : '';
 
   return (
     <StyledLink onClick={handleNavigate}>

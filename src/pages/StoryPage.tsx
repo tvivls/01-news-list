@@ -9,7 +9,6 @@ import StateError from '../components/StateError';
 const StoryPage = observer(() => {
   const { id } = useParams();
   const { getStoryAction, story } = newsStore;
-  let date = '';
 
   useEffect(() => {
     handleRefreshComments();
@@ -31,7 +30,7 @@ const StoryPage = observer(() => {
     return <StateError state={story?.state} />;
   }
 
-  if (story?.value.time) date = new Date(1000 * story?.value.time).toUTCString();
+  const date = story?.value?.time ? new Date(1000 * story?.value.time).toUTCString() : '';
 
   return story?.value ? (
     <>
