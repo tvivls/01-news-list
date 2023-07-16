@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert, AlertTitle, CircularProgress } from '@mui/material';
 import { StyledBox } from '../styles/newsStyles';
 
