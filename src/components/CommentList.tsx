@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getStory } from '../servises/newsApi';
 import { CommentType } from '../utils/types';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { TreeItem, TreeView } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -15,7 +15,6 @@ const removeTags = (text: string) => {
 const CommentList = ({ commentId, nodeId = 0 }: { commentId?: number; nodeId?: number }) => {
   const [comment, setComment] = useState<CommentType>();
   let totalNodeId = nodeId;
-  let date = '';
 
   useEffect(() => {
     if (commentId) {
@@ -24,7 +23,8 @@ const CommentList = ({ commentId, nodeId = 0 }: { commentId?: number; nodeId?: n
   }, [commentId]);
 
   if (nodeId) totalNodeId += 1;
-  if (comment?.time) date = new Date(1000 * comment?.time).toUTCString();
+
+  const date = comment?.time ? new Date(1000 * comment?.time).toUTCString() : '';
 
   return comment?.text !== undefined && comment?.text !== '[dead]' ? (
     <>
@@ -43,8 +43,8 @@ const CommentList = ({ commentId, nodeId = 0 }: { commentId?: number; nodeId?: n
               <CommentList key={commentId} commentId={commentId} nodeId={totalNodeId} />
             ))}
         </TreeItem>
+        <Box mb={2} />
       </TreeView>
-      <br />
     </>
   ) : null;
 };
