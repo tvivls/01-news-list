@@ -14,5 +14,5 @@ export type CommentType = {
   by?: string;
   text?: string;
   time?: number;
-  comments?: number[];
+  kids?: number[];
 };

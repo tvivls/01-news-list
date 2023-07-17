@@ -27,25 +27,23 @@ const CommentList = ({ commentId, nodeId = 0 }: { commentId?: number; nodeId?: n
   const date = comment?.time ? new Date(1000 * comment?.time).toUTCString() : '';
 
   return comment?.text !== undefined && comment?.text !== '[dead]' ? (
-    <>
-      <TreeView
-        aria-label="file system navigator"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <Typography sx={{ mt: 1, fontSize: '14px' }} color="text.secondary">
-          {comment?.by} {date}
-        </Typography>
-        <TreeItem nodeId={totalNodeId.toString()} label={comment?.text && removeTags(comment?.text)}>
-          {comment?.comments &&
-            comment?.comments.length !== 0 &&
-            comment?.comments.map((commentId: number) => (
-              <CommentList key={commentId} commentId={commentId} nodeId={totalNodeId} />
-            ))}
-        </TreeItem>
-        <Box mb={2} />
-      </TreeView>
-    </>
+    <TreeView
+      aria-label="file system navigator"
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+    >
+      <Typography sx={{ mt: 1, fontSize: '14px' }} color="text.secondary">
+        {comment?.by} {date}
+      </Typography>
+      <TreeItem nodeId={totalNodeId.toString()} label={comment?.text && removeTags(comment?.text)}>
+        {comment?.kids &&
+          comment?.kids.length !== 0 &&
+          comment?.kids.map((commentId: number) => (
+            <CommentList key={commentId} commentId={commentId} nodeId={totalNodeId} />
+          ))}
+      </TreeItem>
+      <Box mb={2} />
+    </TreeView>
   ) : null;
 };
 
