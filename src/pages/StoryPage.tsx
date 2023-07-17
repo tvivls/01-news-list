@@ -33,28 +33,24 @@ const StoryPage = observer(() => {
   const date = story?.value?.time ? new Date(1000 * story?.value.time).toUTCString() : '';
 
   return story?.value ? (
-    <>
-      {story && (
-        <Card sx={{ margin: '10px', padding: '10px', borderRadius: '10px' }}>
-          <CardContent>
-            <Typography variant="h2">{story?.value?.title}</Typography>
-            <Typography variant="h5">By: {story?.value.by}</Typography>
-            <Typography sx={{ mt: 1 }} color="text.secondary">
-              {date}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Link href={story?.value.url} target="_blank">
-              Learn More
-            </Link>
-          </CardActions>
-          <Divider variant="middle" sx={{ m: 1 }} />
-          <Typography>Number of comments: {story?.value?.descendants}</Typography>
-          {Object.hasOwn(story?.value, 'kids') &&
-            story?.value.kids?.map((commentId) => <CommentList key={commentId} commentId={commentId} />)}
-        </Card>
-      )}
-    </>
+    <Card sx={{ margin: '10px', padding: '10px', borderRadius: '10px' }}>
+      <CardContent>
+        <Typography variant="h2">{story?.value?.title}</Typography>
+        <Typography variant="h5">By: {story?.value.by}</Typography>
+        <Typography sx={{ mt: 1 }} color="text.secondary">
+          {date}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Link href={story?.value.url} target="_blank">
+          Learn More
+        </Link>
+      </CardActions>
+      <Divider variant="middle" sx={{ m: 1 }} />
+      <Typography>Number of comments: {story?.value?.descendants}</Typography>
+      {Object.hasOwn(story?.value, 'kids') &&
+        story?.value.kids?.map((commentId) => <CommentList key={commentId} commentId={commentId} />)}
+    </Card>
   ) : null;
 });
 
