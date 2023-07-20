@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import { getStory } from '../servises/newsApi';
 import { CommentType } from '../utils/types';
 import { Box, Typography } from '@mui/material';
 import { TreeItem, TreeView } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import useStory from '../hooks/useStory';
 
 const removeTags = (text: string) => {
   const tempElement = document.createElement('div');
@@ -12,35 +11,30 @@ const removeTags = (text: string) => {
   return tempElement.textContent || tempElement.innerText;
 };
 
-const CommentList = ({ commentId, nodeId = 0 }: { commentId?: number; nodeId?: number }) => {
-  const [comment, setComment] = useState<CommentType>();
+const CommentList = ({ id, nodeId = 0 }: { id?: number; nodeId?: number }) => {
+  if (!id) return null;
+  const { data, isError, isLoading } = useStory<CommentType>(id);
+  const date = data?.time ? new Date(1000 * data?.time).toUTCString() : '';
   let totalNodeId = nodeId;
 
-  useEffect(() => {
-    if (commentId) {
-      getStory(commentId).then((result) => setComment(result));
-    }
-  }, [commentId]);
+  if (isError) return <Typography>failed to load</Typography>;
+  if (isLoading) return <Typography>loading...</Typography>;
 
   if (nodeId) totalNodeId += 1;
 
-  const date = comment?.time ? new Date(1000 * comment?.time).toUTCString() : '';
-
-  return comment?.text !== undefined && comment?.text !== '[dead]' ? (
+  return data?.text !== undefined && data?.text !== '[dead]' ? (
     <TreeView
       aria-label="file system navigator"
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
     >
       <Typography sx={{ mt: 1, fontSize: '14px' }} color="text.secondary">
-        {comment?.by} {date}
+        {data?.by} {date}
       </Typography>
-      <TreeItem nodeId={totalNodeId.toString()} label={comment?.text && removeTags(comment?.text)}>
-        {comment?.kids &&
-          comment?.kids.length !== 0 &&
-          comment?.kids.map((commentId: number) => (
-            <CommentList key={commentId} commentId={commentId} nodeId={totalNodeId} />
-          ))}
+      <TreeItem nodeId={totalNodeId.toString()} label={data?.text && removeTags(data?.text)}>
+        {data?.kids &&
+          data?.kids.length !== 0 &&
+          data?.kids.map((commentId: number) => <CommentList key={commentId} id={commentId} nodeId={totalNodeId} />)}
       </TreeItem>
       <Box mb={2} />
     </TreeView>

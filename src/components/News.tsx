@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react';
-import { getStory } from '../servises/newsApi';
 import NewsCard from './NewsCard';
 import { NewsType } from '../utils/types';
+import useStory from '../hooks/useStory';
 
 const News = ({ id }: NewsType) => {
-  const [news, setNews] = useState<NewsType[]>([]);
+  const { data } = useStory<NewsType>(id);
 
-  useEffect(() => {
-    getStory(id).then((result) => result && result.url && setNews([...news, result]));
-  }, []);
-
-  return <>{news?.map((story) => <NewsCard key={story.id} {...story} />)}</>;
+  return data ? <NewsCard key={data?.id} {...data} /> : null;
 };
 
 export default News;
