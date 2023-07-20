@@ -49,7 +49,7 @@ const StoryPage = observer(() => {
       <Divider variant="middle" sx={{ m: 1 }} />
       <Typography>Number of comments: {story?.value?.descendants}</Typography>
       {Object.hasOwn(story?.value, 'kids') &&
-        story?.value.kids?.map((commentId) => <CommentList key={commentId} commentId={commentId} />)}
+        story?.value.kids?.map((commentId) => <CommentList key={commentId} id={commentId} />)}
     </Card>
   ) : null;
 });
