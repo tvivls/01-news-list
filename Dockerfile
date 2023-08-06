@@ -10,6 +10,8 @@ COPY . .
 
 RUN npm run build
 
+COPY nginx.conf /etc/nginx/nginx.conf
+
 FROM nginx:alpine
 
 WORKDIR /usr/share/nginx/html
